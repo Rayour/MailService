@@ -6,6 +6,7 @@ class CustomUser(AbstractUser):
     """Модель кастомного пользователя"""
 
     email = models.EmailField(unique=True)
+    is_mail_confirmed = models.BooleanField(default=False)
     first_name = models.CharField(max_length=20, null=True, blank=True, verbose_name="Имя",
                                   help_text="Необязательное поле. Введите Ваше имя")
     last_name = models.CharField(max_length=20, null=True, blank=True, verbose_name="Фамилия",

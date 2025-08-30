@@ -5,7 +5,7 @@ from users.models import CustomUser
 class Customer(models.Model):
     """Модель клиента (получателя писем)"""
 
-    email = models.CharField(max_length=60, verbose_name="Электронная почта", unique=True)
+    email = models.EmailField(unique=True, verbose_name="Электронная почта")
     full_name = models.CharField(max_length=150, verbose_name="Ф.И.О.")
     comment = models.TextField(verbose_name="Комментарий", null=True, blank=True,
                                help_text="Вы можете оставить комментарий относительно клиента")

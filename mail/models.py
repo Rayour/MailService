@@ -56,8 +56,10 @@ class Newsletter(models.Model):
         ('finished', 'Завершена')
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created')
-    message = models.ForeignKey(Message, verbose_name="Письмо", help_text="Выберите письмо для рассылки", on_delete=models.CASCADE, related_name="newsletters")
-    customers = models.ManyToManyField(Customer, verbose_name="Клиенты", help_text="Укажите клиентов для отправки письма")
+    message = models.ForeignKey(Message, verbose_name="Письмо", help_text="Выберите письмо для рассылки",
+                                on_delete=models.CASCADE, related_name="newsletters")
+    customers = models.ManyToManyField(Customer, verbose_name="Клиенты",
+                                       help_text="Укажите клиентов для отправки письма")
     start_send_time = models.DateTimeField(verbose_name="Дата и время начала отправки писем", null=True, blank=True)
     finish_send_time = models.DateTimeField(verbose_name="Дата и время окончания отправки писем", null=True, blank=True)
     owner = models.ForeignKey(CustomUser, verbose_name="Владелец", null=True, blank=True, on_delete=models.SET_NULL,
@@ -76,7 +78,7 @@ class Newsletter(models.Model):
         ordering = ["start_send_time"]
 
 
-class MailingTry:
+class Attempt(models.Model):
     """Модель попытки отправки письма"""
 
     STATUS_CHOICES = [
@@ -84,11 +86,12 @@ class MailingTry:
         ('fail', 'Не успешно'),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
-    customer = models.ForeignKey(Customer, verbose_name="Клиент", on_delete=models.CASCADE, related_name="mailing_tries")
-    message = models.ForeignKey(Message, verbose_name="Письмо", on_delete=models.CASCADE, related_name="mailing_tries")
+    customer = models.ForeignKey(Customer, verbose_name="Клиент", on_delete=models.CASCADE,
+                                 related_name="attempts")
+    message = models.ForeignKey(Message, verbose_name="Письмо", on_delete=models.CASCADE, related_name="attempts")
     server_response = models.TextField(verbose_name="Ответ сервера", null=True, blank=True)
     owner = models.ForeignKey(CustomUser, verbose_name="Владелец", null=True, blank=True, on_delete=models.SET_NULL,
-                              related_name="newsletters")
+                              related_name="attempts")
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Дата обновления", auto_now=True)
 
@@ -98,6 +101,5 @@ class MailingTry:
         return self.status
 
     class Meta:
-        verbose_name = "попытка отправки"
-        verbose_name_plural = "попытки отправки"
-        ordering = ["created_at"]
+        verbose_name = "попытка"
+        verbose_name_plural = "попытки"

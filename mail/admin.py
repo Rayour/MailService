@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Customer, Message, Newsletter, MailingTry
+from .models import Customer, Message, Newsletter, Attempt
 
 
 @admin.register(Customer)
@@ -23,7 +23,7 @@ class NewsletterAdmin(admin.ModelAdmin):
     list_filter = ("owner", "status")
 
 
-@admin.register(MailingTry)
-class MailingTryAdmin(admin.ModelAdmin):
+@admin.register(Attempt)
+class AttemptAdmin(admin.ModelAdmin):
     list_display = ("id", "status", "customer", "message", "server_response", "owner")
-    list_filter = ("status", "owner", "owner")
+    list_filter = ("owner", "status")

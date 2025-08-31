@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ message.topic }}{% endblock %}
+
+{% block page_title %}
+{{ message.topic }}
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <a href="{% url 'mail:messages_list' %}" class="btn btn-sm btn-light ml-3">К списку</a>
+    {% if perms.mail.change_message %}
+    <a href="{% url 'mail:edit_message' message.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+    {% endif %}
+    {% if perms.mail.delete_message %}
+    <a href="{% url 'mail:delete_message' message.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
+    {% endif %}
+
+    <p class="lead mt-5"><b>Текст письма</b>: {{ message.text }}</p>
+</div>
+{% endblock %}

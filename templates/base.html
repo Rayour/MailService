@@ -23,7 +23,7 @@
                         <a class="nav-link" href="{% url 'mail:customers_list' %}">Клиенты</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Письма</a>
+                        <a class="nav-link" href="{% url 'mail:messages_list' %}">Письма</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Рассылки</a>
@@ -31,10 +31,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Попытки</a>
                     </li>
-                    <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn nav-link">Выйти</button>
-                    </form>
+                    <li>
+                        <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn nav-link">Выйти</button>
+                        </form>
+                    </li>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'users:register' %}">Регистрация</a>

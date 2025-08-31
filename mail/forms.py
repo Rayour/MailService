@@ -27,3 +27,26 @@ class CustomerForm(forms.ModelForm):
         self.fields["comment"].widget.attrs.update({
             "class": "form-control",
         })
+
+
+class MessageForm(forms.ModelForm):
+    """Класс формы создания/редактирования письма"""
+
+    class Meta:
+        """Описание формы для создания/редактирования письма"""
+
+        model = Message
+        fields = ["topic", "text"]
+
+    def __init__(self, *args, **kwargs):
+        """Метод инициализации формы. Добавление стилизации"""
+
+        super(MessageForm, self).__init__(*args, **kwargs)
+
+        self.fields["topic"].widget.attrs.update({
+            "class": "form-control",
+        })
+
+        self.fields["text"].widget.attrs.update({
+            "class": "form-control",
+        })

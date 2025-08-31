@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Письма{% endblock %}
+
+{% block page_title %}
+Письма
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h5 class="mb-4">Список писем:</h5>
+    {% if perms.mail.add_message %}
+    <a href="{% url 'mail:create_message' %}" class="btn btn-secondary mb-3">Создать письмо</a>
+    {% endif %}
+    <ul class="list-group">
+        {% for message in messages %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>
+                    <a href="{% url 'mail:detail_message' message.pk %}">{{ message.topic }}</a>
+                </span>
+                <span>
+                    {% if perms.mail.change_message %}
+                    <a href="{% url 'mail:edit_message' message.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+                    {% endif %}
+                    {% if perms.mail.delete_message %}
+                    <a href="{% url 'mail:delete_message' message.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
+                    {% endif %}
+                </span>
+
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

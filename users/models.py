@@ -17,6 +17,7 @@ class CustomUser(AbstractUser):
                                     help_text="Необязательное поле. Введите Ваш номер телефона")
     country = models.CharField(max_length=30, null=True, blank=True, verbose_name="Страна",
                                help_text="Необязательное поле. Укажите Вашу страну")
+    hash = models.CharField(max_length=20, null=True, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username', ]

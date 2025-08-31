@@ -18,7 +18,7 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+HOST_NAME = 'http://127.0.0.1:8000/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -149,5 +149,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-# LOGIN_URL = 'users:login'
-# LOGIN_REDIRECT_URL = 'mail:newsletters'
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'users:profile'

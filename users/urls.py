@@ -11,7 +11,7 @@ urlpatterns = [
     path('register/', CustomUserCreateView.as_view(), name='register'),
     path('login/', CustomUserLoginView.as_view(template_name='login.html'), name='login'),
     path('mail_confirm/', CustomUserEmailConfirm.as_view(), name='mail_confirm'),
-    path('profile/', CustomUserDetailView.as_view(), name='profile'),
+    path('', CustomUserDetailView.as_view(), name='profile'),
     path('edit/', CustomUserUpdateView.as_view(), name='edit_profile'),
     path('logout/', LogoutView.as_view(next_page='users:login'), name='logout'),
 ]

@@ -360,13 +360,53 @@
     }
 },
 {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can view all items",
+        "content_type": 6,
+        "codename": "can_view_all"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can view all items",
+        "content_type": 7,
+        "codename": "can_view_all"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can view all items",
+        "content_type": 8,
+        "codename": "can_view_all"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view all items",
+        "content_type": 9,
+        "codename": "can_view_all"
+    }
+},
+{
     "model": "auth.group",
     "pk": 1,
     "fields": {
         "name": "Manager",
         "permissions": [
+            41,
             24,
+            42,
+            43,
             32,
+            44,
             36
         ]
     }

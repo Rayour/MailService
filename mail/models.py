@@ -23,6 +23,9 @@ class Customer(models.Model):
         verbose_name = "клиент"
         verbose_name_plural = "клиенты"
         ordering = ["full_name"]
+        permissions = [
+            ('can_view_all', 'Can view all items'),
+        ]
 
 
 class Message(models.Model):
@@ -45,6 +48,9 @@ class Message(models.Model):
         verbose_name = "письмо"
         verbose_name_plural = "письма"
         ordering = ["topic"]
+        permissions = [
+            ('can_view_all', 'Can view all items'),
+        ]
 
 
 class Newsletter(models.Model):
@@ -76,6 +82,9 @@ class Newsletter(models.Model):
         verbose_name = "рассылка"
         verbose_name_plural = "рассылки"
         ordering = ["start_send_time"]
+        permissions = [
+            ('can_view_all', 'Can view all items'),
+        ]
 
 
 class Attempt(models.Model):
@@ -103,3 +112,6 @@ class Attempt(models.Model):
     class Meta:
         verbose_name = "попытка"
         verbose_name_plural = "попытки"
+        permissions = [
+            ('can_view_all', 'Can view all items'),
+        ]

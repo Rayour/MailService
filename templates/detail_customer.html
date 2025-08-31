@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ customer.full_name }} {{ customer.email }}{% endblock %}
+
+{% block page_title %}
+{{ customer.full_name }}
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <a href="{% url 'mail:customers_list' %}" class="btn btn-sm btn-light ml-3">К списку</a>
+    {% if perms.mail.change_customer %}
+    <a href="{% url 'mail:edit_customer' customer.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+    {% endif %}
+    {% if perms.mail.delete_customer %}
+    <a href="{% url 'mail:delete_customer' customer.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
+    {% endif %}
+
+    <p class="lead mt-5"><b>Email</b>: {{ customer.email }}</p>
+    <p class="lead"><b>Комментарий</b>: {{ customer.comment }}</p>
+</div>
+{% endblock %}

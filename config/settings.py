@@ -151,3 +151,13 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'users:profile'
+
+CACHE_ENABLED = True
+CACHE_TIME = 15 * 60
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': 'redis://127.0.0.1:6379/1',
+        }
+    }

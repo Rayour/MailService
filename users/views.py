@@ -5,10 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DetailView, View
+from django.views.generic import DetailView, View
+from django.views.generic.edit import CreateView, UpdateView
 
 from config.settings import DEFAULT_FROM_EMAIL, HOST_NAME
 

@@ -7,7 +7,7 @@ from django.core.cache import cache
 from config.settings import CACHE_ENABLED, CACHE_TIME
 from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, ListView
 from .models import Customer, Message, Attempt, Newsletter
-from .forms import CustomerForm, MessageForm
+from .forms import CustomerForm, MessageForm, NewsletterForm
 
 
 class CustomerListView(LoginRequiredMixin, ListView):
@@ -145,7 +145,7 @@ class MessageListView(LoginRequiredMixin, ListView):
         if CACHE_ENABLED:
             messages = cache.get(f"messages_list_{user.id}")
             if not messages:
-                customers = Message.objects.filter(owner=user)
+                messages = Message.objects.filter(owner=user)
                 cache.set(f"messages_list_{user.id}", messages, CACHE_TIME)
             return messages
         return Message.objects.filter(owner=user)
@@ -228,5 +228,116 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 
         user = self.request.user
         if not (user == self.object.owner or user.has_perm("mail.delete_message")):
+            raise PermissionDenied
+        return super().form_valid(form)
+
+
+class NewsletterListView(LoginRequiredMixin, ListView):
+    """Класс представления списка рассылок"""
+
+    model = Newsletter
+    template_name = "newsletters_list.html"
+    context_object_name = "newsletters"
+
+    def get_queryset(self):
+        """Метод получения доступных рассылок"""
+
+        user = self.request.user
+
+        if user.has_perm("mail.can_view_all"):
+            if CACHE_ENABLED:
+                newsletters = cache.get("newsletters_list_all")
+                if not newsletters:
+                    newsletters = super().get_queryset()
+                    cache.set("newsletters_list_all", newsletters, CACHE_TIME)
+                return newsletters
+            return super().get_queryset()
+
+        if CACHE_ENABLED:
+            newsletters = cache.get(f"newsletters_list_{user.id}")
+            if not newsletters:
+                newsletters = Newsletter.objects.filter(owner=user)
+                cache.set(f"messages_list_{user.id}", newsletters, CACHE_TIME)
+            return newsletters
+        return Newsletter.objects.filter(owner=user)
+
+
+class NewsletterDetailView(LoginRequiredMixin, DetailView):
+    """Класс представления одной рассылки"""
+
+    model = Newsletter
+    template_name = "detail_newsletter.html"
+    context_object_name = "newsletter"
+
+    def get_object(self, queryset=None):
+        """Метод получения объекта рассылки"""
+
+        newsletter = super().get_object()
+        user = self.request.user
+        if not (user == newsletter.owner or user.has_perm("mail.can_view_all")):
+            raise PermissionDenied
+
+        return newsletter
+
+
+class NewsletterCreateView(CreateView):
+    """Класс представления создания рассылки"""
+
+    model = Newsletter
+    form_class = NewsletterForm
+    template_name = "edit_newsletter.html"
+    success_url = reverse_lazy('mail:newsletters_list')
+
+    def form_valid(self, form):
+        """Метод валидации формы создания"""
+
+        user = self.request.user
+        if not user.has_perm("mail.add_newsletter"):
+            raise PermissionDenied
+        newsletter = form.save()
+        newsletter.owner = user
+        newsletter.save()
+        return super().form_valid(form)
+
+
+class NewsletterUpdateView(UpdateView):
+    """Класс представления редактирования рассылки"""
+
+    model = Newsletter
+    form_class = NewsletterForm
+    template_name = "edit_newsletter.html"
+    success_url = reverse_lazy('mail:newsletters_list')
+
+    def form_valid(self, form):
+        """Метод валидации формы создания"""
+
+        user = self.request.user
+        if not user.has_perm("mail.change_newsletter"):
+            raise PermissionDenied
+        return super().form_valid(form)
+
+
+class NewsletterDeleteView(LoginRequiredMixin, DeleteView):
+    """Класс представления удаления рассылки"""
+
+    model = Newsletter
+    template_name = "delete_newsletter.html"
+    success_url = reverse_lazy('mail:newsletters_list')
+
+    def get_object(self, queryset=None):
+        """Метод получения объекта рассылки"""
+
+        newsletter = super().get_object()
+        user = self.request.user
+        if not (user == newsletter.owner or user.has_perm("mail.delete_newsletter")):
+            raise PermissionDenied
+
+        return newsletter
+
+    def form_valid(self, form):
+        """Метод проверяет наличие прав перед удалением"""
+
+        user = self.request.user
+        if not (user == self.object.owner or user.has_perm("mail.delete_newsletter")):
             raise PermissionDenied
         return super().form_valid(form)

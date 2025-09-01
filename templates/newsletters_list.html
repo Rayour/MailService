@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Рассылки{% endblock %}
+
+{% block page_title %}
+Рассылки
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h5 class="mb-4">Список рассылок:</h5>
+    {% if perms.mail.add_newsletter %}
+    <a href="{% url 'mail:create_newsletter' %}" class="btn btn-secondary mb-3">Создать рассылку</a>
+    {% endif %}
+    <ul class="list-group">
+        {% for newsletter in newsletters %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>
+                    <a href="{% url 'mail:detail_newsletter' newsletter.pk %}">{{ newsletter.name }}</a>
+                </span>
+                <span>
+                    {% if perms.mail.change_newsletter %}
+                    <a href="{% url 'mail:edit_newsletter' newsletter.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+                    {% endif %}
+                    {% if perms.mail.delete_newsletter %}
+                    <a href="{% url 'mail:delete_newsletter' newsletter.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
+                    {% endif %}
+                </span>
+
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

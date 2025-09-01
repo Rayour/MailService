@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение удаления рассылки{% endblock %}
+
+{% block page_title %}
+Удаление рассылки
+{% endblock %}
+
+{% block content %}
+<div class="row text-start">
+    <div class="col-lg-6 col-md-8 col-s-12 mx-auto">
+        <div class="mb-4">
+            <p>Вы действительно хотите удалить рассылку <b>"{{ newsletter.name }}"</b>?.</p>
+            {% if perms.mail.delete_newsletter %}
+            <form method="post" class="form-floating">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-lg btn-block btn-secondary">Удалить</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

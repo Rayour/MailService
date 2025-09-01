@@ -62,6 +62,7 @@ class Newsletter(models.Model):
         ('finished', 'Завершена')
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created')
+    name = models.CharField(max_length=100, verbose_name="Название", help_text="Укажите название рассылки", default="Рассылка")
     message = models.ForeignKey(Message, verbose_name="Письмо", help_text="Выберите письмо для рассылки",
                                 on_delete=models.CASCADE, related_name="newsletters")
     customers = models.ManyToManyField(Customer, verbose_name="Клиенты",
@@ -84,6 +85,7 @@ class Newsletter(models.Model):
         ordering = ["start_send_time"]
         permissions = [
             ('can_view_all', 'Can view all items'),
+            ('can_send_newsletters', 'Can send newsletters'),
         ]
 
 

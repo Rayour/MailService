@@ -19,7 +19,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ("id", "status", "message", "owner")
+    list_display = ("id", "status", "name", "message", "owner")
     list_filter = ("owner", "status")
 
 

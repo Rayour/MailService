@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ newsletter.name }}{% endblock %}
+
+{% block page_title %}
+{{ newsletter.name }}
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <a href="{% url 'mail:newsletters_list' %}" class="btn btn-sm btn-light ml-3">К списку</a>
+    {% if perms.mail.change_newsletter %}
+    <a href="{% url 'mail:edit_newsletter' newsletter.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+    {% endif %}
+    {% if perms.mail.delete_newsletter %}
+    <a href="{% url 'mail:delete_newsletter' newsletter.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
+    {% endif %}
+
+    <p class="lead mt-5"><b>Письмо</b>: {{ newsletter.message }}</p>
+    <p class="lead mt-5"><b>Клиенты</b>: {{ newsletter.customers }}</p>
+</div>
+{% endblock %}

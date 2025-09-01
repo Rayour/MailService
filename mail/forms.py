@@ -50,3 +50,30 @@ class MessageForm(forms.ModelForm):
         self.fields["text"].widget.attrs.update({
             "class": "form-control",
         })
+
+
+class NewsletterForm(forms.ModelForm):
+    """Класс формы создания/редактирования рассылки"""
+
+    class Meta:
+        """Описание формы для создания/редактирования рассылки"""
+
+        model = Newsletter
+        fields = ["name", "message", "customers"]
+
+    def __init__(self, *args, **kwargs):
+        """Метод инициализации формы. Добавление стилизации"""
+
+        super(NewsletterForm, self).__init__(*args, **kwargs)
+
+        self.fields["name"].widget.attrs.update({
+            "class": "form-control",
+        })
+
+        self.fields["message"].widget.attrs.update({
+            "class": "form-control",
+        })
+
+        self.fields["customers"].widget.attrs.update({
+            "class": "form-control",
+        })

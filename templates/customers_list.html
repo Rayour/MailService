@@ -12,23 +12,30 @@
     {% if perms.mail.add_customer %}
     <a href="{% url 'mail:create_customer' %}" class="btn btn-secondary mb-3">Создать клиента</a>
     {% endif %}
-    <ul class="list-group">
+    <table class="table table-striped">
+        <thead class="border-1 border-secondary-subtle">
+            <tr>
+              <th scope="col">Клиент</th>
+              <th scope="col">Действия</th>
+            </tr>
+        </thead>
+        <tbody class="border-1 border-secondary-subtle">
         {% for customer in customers %}
-            <li class="list-group-item d-flex justify-content-between">
-                <span>
+            <tr>
+                <td>
                     <a href="{% url 'mail:detail_customer' customer.pk %}">{{ customer.full_name }}</a>
-                </span>
-                <span>
+                </td>
+                <td>
                     {% if perms.mail.change_customer %}
                     <a href="{% url 'mail:edit_customer' customer.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
                     {% endif %}
                     {% if perms.mail.delete_customer %}
                     <a href="{% url 'mail:delete_customer' customer.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
                     {% endif %}
-                </span>
-
-            </li>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 </div>
 {% endblock %}

@@ -12,24 +12,34 @@
     {% if perms.mail.add_newsletter %}
     <a href="{% url 'mail:create_newsletter' %}" class="btn btn-secondary mb-3">Создать рассылку</a>
     {% endif %}
-    <ul class="list-group">
+    <table class="table table-striped">
+        <thead class="border-1 border-secondary-subtle">
+        <tr>
+            <th scope="col">Рассылка</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody class="border-1 border-secondary-subtle">
         {% for newsletter in newsletters %}
-            <li class="list-group-item d-flex justify-content-between">
-                <span>
+            <tr>
+                <td>
                     <a href="{% url 'mail:detail_newsletter' newsletter.pk %}">{{ newsletter.name }}</a>
-                </span>
-                <span>
+                </td>
+                <td>
                     <span class="badge text-bg-secondary ml-3">{{ newsletter.status }}</span>
+                </td>
+                <td>
                     {% if perms.mail.change_newsletter %}
                     <a href="{% url 'mail:edit_newsletter' newsletter.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
                     {% endif %}
                     {% if perms.mail.delete_newsletter %}
                     <a href="{% url 'mail:delete_newsletter' newsletter.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
                     {% endif %}
-                </span>
-
-            </li>
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 </div>
 {% endblock %}

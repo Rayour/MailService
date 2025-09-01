@@ -16,11 +16,27 @@
     <a href="{% url 'mail:delete_newsletter' newsletter.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
     {% endif %}
 
-    <p class="lead mt-5"><b>Письмо</b>: {{ newsletter.message }}</p>
-    <p class="lead mt-3"><b>Клиенты</b>: {{ newsletter.customers }}</p>
-    <p class="lead mt-3"><b>Статус</b>: {{ newsletter.status }}</p>
-    <p class="lead mt-3"><b>Время запуска</b>: {{ newsletter.start_send_time }}</p>
-    <p class="lead mt-3"><b>Время окончания</b>: {{ newsletter.finish_send_time }}</p>
+    <ul class="list-group mt-5 mb-5">
+        <li class="list-group-item text-start">
+            <b>Письмо</b>: {{ newsletter.message }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Клиенты</b>:<br/>
+            {% for customer in customers %}
+            {{ customer.email }}<br/>
+            {% endfor %}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Статус</b>: {{ newsletter.status }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Время запуска</b>: {{ newsletter.start_send_time }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Время окончания</b>: {{ newsletter.finish_send_time }}
+        </li>
+    </ul>
+
     {% if perms.mail.can_send_newsletters %}
     <form method="post" class="form-floating">
         {% csrf_token %}

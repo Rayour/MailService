@@ -16,7 +16,13 @@
     <a href="{% url 'mail:delete_customer' customer.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
     {% endif %}
 
-    <p class="lead mt-5"><b>Email</b>: {{ customer.email }}</p>
-    <p class="lead"><b>Комментарий</b>: {{ customer.comment }}</p>
+    <ul class="list-group mt-5">
+        <li class="list-group-item text-start">
+            <b>Email</b>: {{ customer.email }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Комментарий</b>: {{ customer.comment }}
+        </li>
+    </ul>
 </div>
 {% endblock %}

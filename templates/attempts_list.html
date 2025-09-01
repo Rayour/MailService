@@ -9,18 +9,25 @@
 {% block content %}
 <div class="container mt-5">
     <h5 class="mb-4">Список попыток:</h5>
-    <ul class="list-group">
+    <table class="table table-striped">
+        <thead class="border-1 border-secondary-subtle">
+            <tr>
+              <th scope="col">Email</th>
+              <th scope="col">Письмо</th>
+              <th scope="col">Время отправки</th>
+              <th scope="col">Статус</th>
+            </tr>
+        </thead>
+        <tbody class="border-1 border-secondary-subtle">
         {% for attempt in attempts %}
-            <li class="list-group-item d-flex justify-content-between">
-                <span>
-                    {{ attempt.customer }} {{ attempt.message }} {{ attempt.created_at }}
-                </span>
-                <span>
-                    {{ attempt.status }}
-                </span>
-
-            </li>
+            <tr>
+              <td>{{ attempt.customer }}</td>
+              <td>{{ attempt.message }}</td>
+              <td>{{ attempt.created_at }}</td>
+              <td>{{ attempt.status }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 </div>
 {% endblock %}

@@ -273,7 +273,10 @@ class NewsletterDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
 
         newsletter = Newsletter.objects.get(id=pk)
-        context = {"newsletter": newsletter}
+        context = {
+            "newsletter": newsletter,
+            "customers": newsletter.customers.all(),
+                   }
         user = self.request.user
         if not (user == newsletter.owner or user.has_perm("mail.can_view_all")):
             raise PermissionDenied
@@ -288,17 +291,6 @@ class NewsletterDetailView(LoginRequiredMixin, View):
         MailService.send_email(customers, newsletter, user)
         context = {"newsletter": newsletter}
         return render(request, "newsletter_start.html", context=context)
-
-
-    # def get_object(self, queryset=None):
-    #     """Метод получения объекта рассылки"""
-    #
-    #     newsletter = super().get_object()
-    #     user = self.request.user
-    #     if not (user == newsletter.owner or user.has_perm("mail.can_view_all")):
-    #         raise PermissionDenied
-    #
-    #     return newsletter
 
 
 class NewsletterCreateView(CreateView):

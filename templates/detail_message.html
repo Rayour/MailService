@@ -16,6 +16,10 @@
     <a href="{% url 'mail:delete_message' message.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
     {% endif %}
 
-    <p class="lead mt-5"><b>Текст письма</b>: {{ message.text }}</p>
+    <ul class="list-group mt-5">
+        <li class="list-group-item text-start">
+            <b>Текст письма</b>: {{ message.text }}
+        </li>
+    </ul>
 </div>
 {% endblock %}

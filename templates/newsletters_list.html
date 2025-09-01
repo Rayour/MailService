@@ -19,6 +19,7 @@
                     <a href="{% url 'mail:detail_newsletter' newsletter.pk %}">{{ newsletter.name }}</a>
                 </span>
                 <span>
+                    <span class="badge text-bg-secondary ml-3">{{ newsletter.status }}</span>
                     {% if perms.mail.change_newsletter %}
                     <a href="{% url 'mail:edit_newsletter' newsletter.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
                     {% endif %}

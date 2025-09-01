@@ -1,13 +1,18 @@
+import datetime
+from time import strftime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.core.cache import cache
+from django.views import View
 
 from config.settings import CACHE_ENABLED, CACHE_TIME
 from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, ListView
 from .models import Customer, Message, Attempt, Newsletter
 from .forms import CustomerForm, MessageForm, NewsletterForm
+from .servises import MailService
 
 
 class CustomerListView(LoginRequiredMixin, ListView):
@@ -262,22 +267,38 @@ class NewsletterListView(LoginRequiredMixin, ListView):
         return Newsletter.objects.filter(owner=user)
 
 
-class NewsletterDetailView(LoginRequiredMixin, DetailView):
+class NewsletterDetailView(LoginRequiredMixin, View):
     """Класс представления одной рассылки"""
 
-    model = Newsletter
-    template_name = "detail_newsletter.html"
-    context_object_name = "newsletter"
+    def get(self, request, pk):
 
-    def get_object(self, queryset=None):
-        """Метод получения объекта рассылки"""
-
-        newsletter = super().get_object()
+        newsletter = Newsletter.objects.get(id=pk)
+        context = {"newsletter": newsletter}
         user = self.request.user
         if not (user == newsletter.owner or user.has_perm("mail.can_view_all")):
             raise PermissionDenied
+        return render(request, "detail_newsletter.html", context=context)
 
-        return newsletter
+    def post(self, request, pk):
+        newsletter = Newsletter.objects.get(id=pk)
+        customers = newsletter.customers.all()
+        user = self.request.user
+        if not user.has_perm("mail.can_send_newsletters"):
+            raise PermissionDenied
+        MailService.send_email(customers, newsletter, user)
+        context = {"newsletter": newsletter}
+        return render(request, "newsletter_start.html", context=context)
+
+
+    # def get_object(self, queryset=None):
+    #     """Метод получения объекта рассылки"""
+    #
+    #     newsletter = super().get_object()
+    #     user = self.request.user
+    #     if not (user == newsletter.owner or user.has_perm("mail.can_view_all")):
+    #         raise PermissionDenied
+    #
+    #     return newsletter
 
 
 class NewsletterCreateView(CreateView):
@@ -341,3 +362,33 @@ class NewsletterDeleteView(LoginRequiredMixin, DeleteView):
         if not (user == self.object.owner or user.has_perm("mail.delete_newsletter")):
             raise PermissionDenied
         return super().form_valid(form)
+
+
+class AttemptListView(LoginRequiredMixin, ListView):
+    """Класс представления списка рассылок"""
+
+    model = Attempt
+    template_name = "attempts_list.html"
+    context_object_name = "attempts"
+
+    def get_queryset(self):
+        """Метод получения доступных рассылок"""
+
+        user = self.request.user
+
+        if user.has_perm("mail.can_view_all"):
+            if CACHE_ENABLED:
+                attempts = cache.get("attempts_list_all")
+                if not attempts:
+                    attempts = super().get_queryset()
+                    cache.set("attempts_list_all", attempts, CACHE_TIME)
+                return attempts
+            return super().get_queryset()
+
+        if CACHE_ENABLED:
+            attempts = cache.get(f"attempts_list_{user.id}")
+            if not attempts:
+                attempts = Attempt.objects.filter(owner=user)
+                cache.set(f"attempts_list_{user.id}", attempts, CACHE_TIME)
+            return attempts
+        return Attempt.objects.filter(owner=user)

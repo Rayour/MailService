@@ -17,6 +17,15 @@
     {% endif %}
 
     <p class="lead mt-5"><b>Письмо</b>: {{ newsletter.message }}</p>
-    <p class="lead mt-5"><b>Клиенты</b>: {{ newsletter.customers }}</p>
+    <p class="lead mt-3"><b>Клиенты</b>: {{ newsletter.customers }}</p>
+    <p class="lead mt-3"><b>Статус</b>: {{ newsletter.status }}</p>
+    <p class="lead mt-3"><b>Время запуска</b>: {{ newsletter.start_send_time }}</p>
+    <p class="lead mt-3"><b>Время окончания</b>: {{ newsletter.finish_send_time }}</p>
+    {% if perms.mail.can_send_newsletters %}
+    <form method="post" class="form-floating">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-secondary">Запустить рассылку</button>
+    </form>
+    {% endif %}
 </div>
 {% endblock %}

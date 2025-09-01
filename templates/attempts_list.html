@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Попытки отправки писем{% endblock %}
+
+{% block page_title %}
+Попытки отправки писем
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h5 class="mb-4">Список попыток:</h5>
+    <ul class="list-group">
+        {% for attempt in attempts %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>
+                    {{ attempt.customer }} {{ attempt.message }} {{ attempt.created_at }}
+                </span>
+                <span>
+                    {{ attempt.status }}
+                </span>
+
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

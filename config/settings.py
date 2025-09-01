@@ -153,7 +153,7 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'users:profile'
 
 CACHE_ENABLED = True
-CACHE_TIME = 15 * 60
+CACHE_TIME = 1 * 60
 if CACHE_ENABLED:
     CACHES = {
         'default': {

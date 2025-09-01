@@ -6,12 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="a154d7f5-0c50-43c7-a01b-432e2a73301c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mail/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/mail/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mail/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/mail/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mail/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/mail/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mail/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mail/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mail/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/detail_newsletter.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/detail_newsletter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_customer.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_customer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_message.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_message.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_newsletter.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_newsletter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/newsletters_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/newsletters_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

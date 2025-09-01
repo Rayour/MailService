@@ -29,7 +29,7 @@
                         <a class="nav-link" href="{% url 'mail:newsletters_list' %}">Рассылки</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Попытки</a>
+                        <a class="nav-link" href="{% url 'mail:attempts_list' %}">Попытки</a>
                     </li>
                     <li>
                         <form method="post" action="{% url 'users:logout' %}" style="display: inline;">

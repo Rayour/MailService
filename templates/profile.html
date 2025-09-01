@@ -10,7 +10,17 @@
 <div class="row mt-5 text-start">
     <div class="col-lg-8 col-md-6 col-sm-12">
         <div class="mb-4">
-            Тут будет статистика
+            <ul class="list-group">
+                <li class="list-group-item text-start">
+                    <b>Всего рассылок</b>: {{ newsletters_all }}
+                </li>
+                <li class="list-group-item text-start">
+                    <b>Запущенных рассылок</b>: {{ newsletters_active }}
+                </li>
+                <li class="list-group-item text-start">
+                    <b>Уникальных получателей</b>: {{ unique_customers }}
+                </li>
+            </ul>
         </div>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-12">

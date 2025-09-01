@@ -7,13 +7,14 @@ from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, View
+from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView
 
 from config.settings import DEFAULT_FROM_EMAIL, HOST_NAME
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm, CustomAuthForm
 from .models import CustomUser
+from mail.models import Newsletter, Customer
 
 User = get_user_model()
 
@@ -57,16 +58,23 @@ class CustomUserUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
 
-class CustomUserDetailView(LoginRequiredMixin, DetailView):
+class CustomUserDetailView(LoginRequiredMixin, View):
     """Класс представления для отображения профиля пользователя"""
 
-    model = User
-    template_name = "profile.html"
-    context_object_name = "user"
+    def get(self, request):
+        """Метод обработки гет запроса"""
 
-    def get_object(self, queryset=None):
-        """Метод получения пользователя"""
-        return self.request.user
+        user = self.request.user
+        newsletters_all = Newsletter.objects.filter(owner=user).count()
+        newsletters_active = Newsletter.objects.filter(owner=user, status="started").count()
+        unique_customers = Customer.objects.filter(owner=user).values('email').distinct().count()
+        context = {
+            "user": user,
+            "newsletters_all": newsletters_all,
+            "newsletters_active": newsletters_active,
+            "unique_customers": unique_customers,
+        }
+        return render(request, "profile.html", context=context)
 
 
 class CustomUserEmailConfirm(View):

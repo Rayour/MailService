@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import View, ListView
+from django.views.generic import View, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.core.cache import cache
 
@@ -15,7 +15,7 @@ from config.settings import DEFAULT_FROM_EMAIL, HOST_NAME, CACHE_ENABLED, CACHE_
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm, CustomAuthForm, CustomUserChangeManagerForm
 from .models import CustomUser
-from mail.models import Newsletter, Customer
+from mail.models import Newsletter, Customer, Attempt
 
 User = get_user_model()
 
@@ -149,3 +149,27 @@ class CustomUserListView(LoginRequiredMixin, ListView):
                 cache.set(f"users_list", users, CACHE_TIME)
             return users
         return CustomUser.objects.filter(groups__name='Base_user')
+
+
+class CustomUserDetailManagerView(LoginRequiredMixin, View):
+    """Класс представления для отображения профиля пользователя"""
+
+    def get(self, request, pk):
+        """Метод обработки гет запроса"""
+
+        manager = self.request.user
+        if not manager.has_perm("users.can_manage"):
+            raise PermissionError
+
+        user = CustomUser.objects.get(id=pk)
+        success_attempts = Attempt.objects.filter(owner=user, status="success").count()
+        fail_attempts = Attempt.objects.filter(owner=user, status="fail").count()
+        finished_newsletters = Newsletter.objects.filter(owner=user, status="finished").count()
+
+        context = {
+            "user": user,
+            "success_attempts": success_attempts,
+            "fail_attempts": fail_attempts,
+            "finished_newsletters": finished_newsletters,
+        }
+        return render(request, "detail_user.html", context=context)

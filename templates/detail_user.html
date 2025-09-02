@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
+
+{% block page_title %}
+{{ user.first_name }} {{ user.last_name }}
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <a href="{% url 'users:users_list' %}" class="btn btn-sm btn-light ml-3">К списку</a>
+    <a href="{% url 'users:edit_user' user.pk %}" class="btn btn-sm btn-outline-secondary ml-1">{% if user.is_blocked %}Разблокировать{% else %}Заблокировать{% endif %}</a>
+
+    <ul class="list-group mt-5">
+        <li class="list-group-item text-start">
+            <b>Количество успешных попыток</b>: {{ success_attempts }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Количество неудачных попыток</b>: {{ fail_attempts }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Количество завершенных рассылок</b>: {{ finished_newsletters }}
+        </li>
+    </ul>
+</div>
+{% endblock %}

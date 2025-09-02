@@ -25,5 +25,5 @@ class NewsletterAdmin(admin.ModelAdmin):
 
 @admin.register(Attempt)
 class AttemptAdmin(admin.ModelAdmin):
-    list_display = ("id", "status", "customer", "message", "server_response", "owner")
+    list_display = ("id", "status", "customer", "newsletter", "server_response", "owner", "created_at")
     list_filter = ("owner", "status")

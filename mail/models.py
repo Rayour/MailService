@@ -99,7 +99,7 @@ class Attempt(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
     customer = models.ForeignKey(Customer, verbose_name="Клиент", on_delete=models.CASCADE,
                                  related_name="attempts")
-    message = models.ForeignKey(Message, verbose_name="Письмо", on_delete=models.CASCADE, related_name="attempts")
+    newsletter = models.ForeignKey(Newsletter, verbose_name="Рассылка", on_delete=models.CASCADE, related_name="attempts", default=1)
     server_response = models.TextField(verbose_name="Ответ сервера", null=True, blank=True)
     owner = models.ForeignKey(CustomUser, verbose_name="Владелец", null=True, blank=True, on_delete=models.SET_NULL,
                               related_name="attempts")

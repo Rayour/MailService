@@ -43,7 +43,7 @@ class MailService:
                 attempt = Attempt(
                     status="fail",
                     customer=customer,
-                    message=newsletter.message,
+                    newsletter=newsletter,
                     server_response=e,
                     owner=user)
                 attempt.save()
@@ -52,7 +52,7 @@ class MailService:
                 attempt = Attempt(
                     status="success",
                     customer=customer,
-                    message=newsletter.message,
+                    newsletter=newsletter,
                     owner=user)
                 attempt.save()
                 logger.info("Создана запись об отправке")

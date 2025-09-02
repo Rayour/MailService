@@ -13,7 +13,7 @@
         <thead class="border-1 border-secondary-subtle">
             <tr>
               <th scope="col">Email</th>
-              <th scope="col">Письмо</th>
+              <th scope="col">Рассылка</th>
               <th scope="col">Время отправки</th>
               <th scope="col">Статус</th>
             </tr>
@@ -22,7 +22,7 @@
         {% for attempt in attempts %}
             <tr>
               <td>{{ attempt.customer }}</td>
-              <td>{{ attempt.message }}</td>
+              <td>{{ attempt.newsletter }}</td>
               <td>{{ attempt.created_at }}</td>
               <td>{{ attempt.status }}</td>
             </tr>

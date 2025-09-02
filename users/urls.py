@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, include
+from django.views.decorators.cache import cache_page
+
+from config.settings import CACHE_TIME
 from users.apps import UsersConfig
 
 from .views import CustomUserCreateView, CustomUserEmailConfirm, CustomUserLoginView, CustomUserDetailView, CustomUserUpdateView, CustomUserUpdateManagerView, CustomUserListView, CustomUserDetailManagerView
@@ -16,5 +19,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='users:login'), name='logout'),
     path('edit_user/<int:pk>/', CustomUserUpdateManagerView.as_view(), name='edit_user'),
     path('users_list/', CustomUserListView.as_view(), name='users_list'),
-    path('detail_user/<int:pk>/', CustomUserDetailManagerView.as_view(), name='detail_user'),
+    path('detail_user/<int:pk>/', cache_page(CACHE_TIME)(CustomUserDetailManagerView.as_view()), name='detail_user'),
 ]

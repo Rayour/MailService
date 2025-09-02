@@ -7,12 +7,13 @@ from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.views.generic.edit import CreateView, UpdateView
+from django.core.cache import cache
 
-from config.settings import DEFAULT_FROM_EMAIL, HOST_NAME
+from config.settings import DEFAULT_FROM_EMAIL, HOST_NAME, CACHE_ENABLED, CACHE_TIME
 
-from .forms import CustomUserChangeForm, CustomUserCreationForm, CustomAuthForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm, CustomAuthForm, CustomUserChangeManagerForm
 from .models import CustomUser
 from mail.models import Newsletter, Customer
 
@@ -58,6 +59,15 @@ class CustomUserUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
 
+class CustomUserUpdateManagerView(LoginRequiredMixin, UpdateView):
+    """Класс представления для редактирования пользователя"""
+
+    model = User
+    template_name = "edit_profile.html"
+    form_class = CustomUserChangeManagerForm
+    success_url = reverse_lazy("users:users_list")
+
+
 class CustomUserDetailView(LoginRequiredMixin, View):
     """Класс представления для отображения профиля пользователя"""
 
@@ -65,9 +75,14 @@ class CustomUserDetailView(LoginRequiredMixin, View):
         """Метод обработки гет запроса"""
 
         user = self.request.user
-        newsletters_all = Newsletter.objects.filter(owner=user).count()
-        newsletters_active = Newsletter.objects.filter(owner=user, status="started").count()
-        unique_customers = Customer.objects.filter(owner=user).values('email').distinct().count()
+        if user.has_perm("users.can_manage"):
+            newsletters_all = Newsletter.objects.count()
+            newsletters_active = Newsletter.objects.filter(status="started").count()
+            unique_customers = Customer.objects.values('email').distinct().count()
+        else:
+            newsletters_all = Newsletter.objects.filter(owner=user).count()
+            newsletters_active = Newsletter.objects.filter(owner=user, status="started").count()
+            unique_customers = Customer.objects.filter(owner=user).values('email').distinct().count()
         context = {
             "user": user,
             "newsletters_all": newsletters_all,
@@ -109,3 +124,28 @@ class CustomUserLoginView(LoginView):
             form.add_error("username", "Электронная почта не подтверждена")
             return self.form_invalid(form)
         return super().form_valid(form)
+
+
+class CustomUserListView(LoginRequiredMixin, ListView):
+    """Класс представления списка пользователей"""
+
+    model = CustomUser
+    template_name = "users_list.html"
+    context_object_name = "users"
+
+    def get_queryset(self):
+        """Метод получения списка пользователей"""
+
+        user = self.request.user
+
+        if not user.has_perm("users.can_manage"):
+            raise PermissionError
+
+        if CACHE_ENABLED:
+            users = cache.get(f"users_list")
+            if not users:
+                # group = Group.objects.get(name='Base_user')
+                users = CustomUser.objects.filter(groups__name='Base_user')
+                cache.set(f"users_list", users, CACHE_TIME)
+            return users
+        return CustomUser.objects.filter(groups__name='Base_user')

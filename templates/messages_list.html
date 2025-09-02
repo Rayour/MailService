@@ -9,8 +9,15 @@
 {% block content %}
 <div class="container mt-5">
     <h5 class="mb-4">Список писем:</h5>
-    {% if perms.mail.add_message %}
+    {% if perms.mail.add_message and not user.is_blocked %}
     <a href="{% url 'mail:create_message' %}" class="btn btn-secondary mb-3">Создать письмо</a>
+    {% endif %}
+    {% if user.is_blocked %}
+    <div class="card bg-primary-subtle mb-3">
+        <div class="card-body">
+            Вы не можете совершать действия. Обратитесь к администратору сайта.
+        </div>
+    </div>
     {% endif %}
     <table class="table table-striped">
         <thead class="border-1 border-secondary-subtle">
@@ -26,10 +33,10 @@
                   <a href="{% url 'mail:detail_message' message.pk %}">{{ message.topic }}</a>
               </td>
               <td>
-                  {% if perms.mail.change_message %}
+                  {% if perms.mail.change_message and not user.is_blocked %}
                     <a href="{% url 'mail:edit_message' message.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
                     {% endif %}
-                    {% if perms.mail.delete_message %}
+                    {% if perms.mail.delete_message and not user.is_blocked %}
                     <a href="{% url 'mail:delete_message' message.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
                     {% endif %}
               </td>

@@ -73,6 +73,7 @@ class Newsletter(models.Model):
                               related_name="newsletters")
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Дата обновления", auto_now=True)
+    is_blocked = models.BooleanField(default=False, verbose_name="Заблокирована?")
 
     def __str__(self):
         """Строковое представление объекта рассылки"""
@@ -86,6 +87,7 @@ class Newsletter(models.Model):
         permissions = [
             ('can_view_all', 'Can view all items'),
             ('can_send_newsletters', 'Can send newsletters'),
+            ('can_manage', 'Can manage'),
         ]
 
 

@@ -18,6 +18,7 @@ class CustomUser(AbstractUser):
     country = models.CharField(max_length=30, null=True, blank=True, verbose_name="Страна",
                                help_text="Необязательное поле. Укажите Вашу страну")
     hash = models.CharField(max_length=20, null=True, blank=True)
+    is_blocked = models.BooleanField(default=False, verbose_name="Заблокирован?")
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ['username', ]
@@ -26,3 +27,10 @@ class CustomUser(AbstractUser):
         """Строковое представление пользователя"""
 
         return self.email
+
+    class Meta:
+        verbose_name = "пользователь"
+        verbose_name_plural = "пользователи"
+        permissions = [
+            ('can_manage', 'Can manage'),
+        ]

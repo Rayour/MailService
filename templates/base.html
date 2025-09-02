@@ -19,6 +19,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'users:profile' %}">Профиль</a>
                     </li>
+                    {% if perms.users.can_manage %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'users:users_list' %}">Пользователи</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'mail:customers_list' %}">Клиенты</a>
                     </li>

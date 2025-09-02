@@ -118,3 +118,22 @@ class CustomAuthForm(AuthenticationForm):
 
         model = CustomUser
         fields = ("email", "password")
+
+
+class CustomUserChangeManagerForm(forms.ModelForm):
+    """Форма редактирования пользователя"""
+
+    def __init__(self, *args, **kwargs):
+        """Метод инициализации формы. Добавление стилизации"""
+
+        super(CustomUserChangeManagerForm, self).__init__(*args, **kwargs)
+
+        self.fields["is_blocked"].widget.attrs.update({
+            "class": "form-check",
+        })
+
+    class Meta:
+        """Описание формы для блокировки пользователя"""
+
+        model = User
+        fields = ("is_blocked", )

@@ -75,7 +75,7 @@ class CustomerCreateView(CreateView):
         """Метод валидации формы создания"""
 
         user = self.request.user
-        if not user.has_perm("mail.add_customer"):
+        if not user.has_perm("mail.add_customer") or user.is_blocked:
             raise PermissionDenied
         customer = form.save()
         customer.owner = user
@@ -91,13 +91,15 @@ class CustomerUpdateView(UpdateView):
     template_name = "edit_customer.html"
     success_url = reverse_lazy('mail:customers_list')
 
-    def form_valid(self, form):
-        """Метод валидации формы создания"""
+    def get_object(self, queryset=None):
+        """Метод получения объекта клиента"""
 
+        customer = super().get_object()
         user = self.request.user
-        if not user.has_perm("mail.change_customer"):
+        if not user == customer.owner or user.is_blocked:
             raise PermissionDenied
-        return super().form_valid(form)
+
+        return customer
 
 
 class CustomerDeleteView(LoginRequiredMixin, DeleteView):
@@ -112,18 +114,10 @@ class CustomerDeleteView(LoginRequiredMixin, DeleteView):
 
         customer = super().get_object()
         user = self.request.user
-        if not (user == customer.owner or user.has_perm("mail.delete_customer")):
+        if not user == customer.owner or user.is_blocked:
             raise PermissionDenied
 
         return customer
-
-    def form_valid(self, form):
-        """Метод проверяет наличие прав перед удалением"""
-
-        user = self.request.user
-        if not (user == self.object.owner or user.has_perm("mail.delete_customer")):
-            raise PermissionDenied
-        return super().form_valid(form)
 
 
 class MessageListView(LoginRequiredMixin, ListView):
@@ -186,7 +180,7 @@ class MessageCreateView(CreateView):
         """Метод валидации формы создания"""
 
         user = self.request.user
-        if not user.has_perm("mail.add_message"):
+        if not user.has_perm("mail.add_message") or user.is_blocked:
             raise PermissionDenied
         message = form.save()
         message.owner = user
@@ -202,13 +196,14 @@ class MessageUpdateView(UpdateView):
     template_name = "edit_message.html"
     success_url = reverse_lazy('mail:messages_list')
 
-    def form_valid(self, form):
-        """Метод валидации формы создания"""
+    def get_object(self, queryset=None):
+        """Метод получения объекта"""
 
         user = self.request.user
-        if not user.has_perm("mail.change_message"):
+        message = super().get_object()
+        if not user == message.owner or user.is_blocked:
             raise PermissionDenied
-        return super().form_valid(form)
+        return message
 
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
@@ -223,18 +218,10 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 
         message = super().get_object()
         user = self.request.user
-        if not (user == message.owner or user.has_perm("mail.delete_message")):
+        if not user == message.owner or user.is_blocked:
             raise PermissionDenied
 
         return message
-
-    def form_valid(self, form):
-        """Метод проверяет наличие прав перед удалением"""
-
-        user = self.request.user
-        if not (user == self.object.owner or user.has_perm("mail.delete_message")):
-            raise PermissionDenied
-        return super().form_valid(form)
 
 
 class NewsletterListView(LoginRequiredMixin, ListView):
@@ -286,7 +273,7 @@ class NewsletterDetailView(LoginRequiredMixin, View):
         newsletter = Newsletter.objects.get(id=pk)
         customers = newsletter.customers.all()
         user = self.request.user
-        if not user.has_perm("mail.can_send_newsletters"):
+        if not user.has_perm("mail.can_send_newsletters") or user.is_blocked or newsletter.status != "created":
             raise PermissionDenied
         MailService.send_email(customers, newsletter, user)
         context = {"newsletter": newsletter}
@@ -305,7 +292,7 @@ class NewsletterCreateView(CreateView):
         """Метод валидации формы создания"""
 
         user = self.request.user
-        if not user.has_perm("mail.add_newsletter"):
+        if not user.has_perm("mail.add_newsletter") or user.is_blocked:
             raise PermissionDenied
         newsletter = form.save()
         newsletter.owner = user
@@ -321,13 +308,14 @@ class NewsletterUpdateView(UpdateView):
     template_name = "edit_newsletter.html"
     success_url = reverse_lazy('mail:newsletters_list')
 
-    def form_valid(self, form):
-        """Метод валидации формы создания"""
+    def get_object(self, queryset=None):
+        """Метод получения объекта"""
 
+        newsletter = super().get_object()
         user = self.request.user
-        if not user.has_perm("mail.change_newsletter"):
+        if not user == newsletter.owner or user.is_blocked:
             raise PermissionDenied
-        return super().form_valid(form)
+        return newsletter
 
 
 class NewsletterDeleteView(LoginRequiredMixin, DeleteView):
@@ -342,18 +330,10 @@ class NewsletterDeleteView(LoginRequiredMixin, DeleteView):
 
         newsletter = super().get_object()
         user = self.request.user
-        if not (user == newsletter.owner or user.has_perm("mail.delete_newsletter")):
+        if not user == newsletter.owner or user.is_blocked:
             raise PermissionDenied
 
         return newsletter
-
-    def form_valid(self, form):
-        """Метод проверяет наличие прав перед удалением"""
-
-        user = self.request.user
-        if not (user == self.object.owner or user.has_perm("mail.delete_newsletter")):
-            raise PermissionDenied
-        return super().form_valid(form)
 
 
 class AttemptListView(LoginRequiredMixin, ListView):

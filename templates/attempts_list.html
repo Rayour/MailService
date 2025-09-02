@@ -22,7 +22,7 @@
         {% for attempt in attempts %}
             <tr>
               <td>{{ attempt.customer }}</td>
-              <td>{{ attempt.newsletter }}</td>
+              <td>{{ attempt.newsletter.name }}</td>
               <td>{{ attempt.created_at }}</td>
               <td>{{ attempt.status }}</td>
             </tr>

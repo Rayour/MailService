@@ -9,10 +9,10 @@
 {% block content %}
 <div class="text-center">
     <a href="{% url 'mail:newsletters_list' %}" class="btn btn-sm btn-light ml-3">К списку</a>
-    {% if perms.mail.change_newsletter %}
+    {% if perms.mail.change_newsletter and not user.is_blocked %}
     <a href="{% url 'mail:edit_newsletter' newsletter.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
     {% endif %}
-    {% if perms.mail.delete_newsletter %}
+    {% if perms.mail.delete_newsletter and not user.is_blocked %}
     <a href="{% url 'mail:delete_newsletter' newsletter.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
     {% endif %}
 
@@ -37,7 +37,7 @@
         </li>
     </ul>
 
-    {% if perms.mail.can_send_newsletters %}
+    {% if perms.mail.can_send_newsletters and not user.is_blocked and newsletter.status == 'created' %}
     <form method="post" class="form-floating">
         {% csrf_token %}
         <button type="submit" class="btn btn-secondary">Запустить рассылку</button>

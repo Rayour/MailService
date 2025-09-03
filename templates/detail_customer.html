@@ -21,7 +21,7 @@
             <b>Email</b>: {{ customer.email }}
         </li>
         <li class="list-group-item text-start">
-            <b>Комментарий</b>: {{ customer.comment }}
+            <b>Комментарий</b>: {{ customer.comment|default:"Комментарий не указан" }}
         </li>
     </ul>
 </div>

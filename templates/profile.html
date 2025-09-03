@@ -32,11 +32,11 @@
                 {% if user.avatar %}
                 <img class="img-thumbnail border-5" src="{{ user.avatar.url }}" alt="avatar"/>
                 {% endif %}
-                <p><b>Имя</b>: {{user.first_name}} {{user.last_name}}</p>
+                <p><b>Имя</b>: {{user.first_name|default:"Не указано"}} {{user.last_name|default:"Не указано"}}</p>
                 <p><b>Email</b>: {{user.email}}</p>
                 <p><b>Username</b>: {{user.username}}</p>
-                <p><b>Телефон</b>: {{user.phone}}</p>
-                <p><b>Страна</b>: {{user.country}}</p>
+                <p><b>Телефон</b>: {{user.phone|default="Не указано"}}</p>
+                <p><b>Страна</b>: {{user.country|default="Не указано"}}</p>
                 <a href="{% url 'users:edit_profile' %}" class="btn btn-secondary">Изменить</a>
             </div>
         </div>

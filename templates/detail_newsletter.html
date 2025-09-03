@@ -30,10 +30,10 @@
             <b>Статус</b>: {% if newsletter.status == 'created' %}Создана{% elif newsletter.status == 'started' %}Запущена{% elif newsletter.status == 'finished' %}Завершена{% endif %}
         </li>
         <li class="list-group-item text-start">
-            <b>Время запуска</b>: {{ newsletter.start_send_time }}
+            <b>Время запуска</b>: {{ newsletter.start_send_time|date:"d.m.Y H:i:s" }}
         </li>
         <li class="list-group-item text-start">
-            <b>Время окончания</b>: {{ newsletter.finish_send_time }}
+            <b>Время окончания</b>: {{ newsletter.finish_send_time|date:"d.m.Y H:i:s" }}
         </li>
     </ul>
 

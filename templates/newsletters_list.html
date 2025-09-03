@@ -34,7 +34,7 @@
                     <a href="{% url 'mail:detail_newsletter' newsletter.pk %}">{{ newsletter.name }}</a>
                 </td>
                 <td>
-                    <span class="badge text-bg-secondary ml-3">{{ newsletter.status }}</span>
+                    {% if newsletter.status == 'created' %}Создана{% elif newsletter.status == 'started' %}Запущена{% elif newsletter.status == 'finished' %}Завершена{% endif %}
                 </td>
                 <td>
                     {% if perms.mail.change_newsletter and not user.is_blocked %}

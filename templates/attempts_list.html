@@ -24,7 +24,7 @@
               <td>{{ attempt.customer }}</td>
               <td>{{ attempt.newsletter.name }}</td>
               <td>{{ attempt.created_at }}</td>
-              <td>{{ attempt.status }}</td>
+              <td>{% if attempt.status == 'success' %}Успешно{% elif attempt.status == 'fail' %}Не успешно{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

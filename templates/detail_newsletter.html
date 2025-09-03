@@ -27,7 +27,7 @@
             {% endfor %}
         </li>
         <li class="list-group-item text-start">
-            <b>Статус</b>: {{ newsletter.status }}
+            <b>Статус</b>: {% if newsletter.status == 'created' %}Создана{% elif newsletter.status == 'started' %}Запущена{% elif newsletter.status == 'finished' %}Завершена{% endif %}
         </li>
         <li class="list-group-item text-start">
             <b>Время запуска</b>: {{ newsletter.start_send_time }}

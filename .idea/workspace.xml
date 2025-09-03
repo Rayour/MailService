@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a154d7f5-0c50-43c7-a01b-432e2a73301c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/attempts_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/attempts_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/detail_customer.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/detail_customer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/detail_newsletter.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/detail_newsletter.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/detail_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/detail_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mail/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

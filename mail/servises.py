@@ -25,7 +25,7 @@ class MailService:
     """Класс для описания бизнес-логики отправки писем"""
 
     @staticmethod
-    def send_email(customers, newsletter, user):
+    def send_email(newsletter, user):
         """Метод отправки сообщения"""
 
         newsletter.start_send_time = datetime.datetime.now()
@@ -33,7 +33,7 @@ class MailService:
         newsletter.status = "started"
         logger.info(f"Статус рассылки {newsletter.status}")
         from_email = DEFAULT_FROM_EMAIL
-        for customer in customers:
+        for customer in newsletter.customers.all():
             recipient_list = [customer.email]
             try:
                 logger.info(f"Попытка отправки письма {newsletter.message.topic} на почту {customer.email}")

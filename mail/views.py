@@ -323,7 +323,7 @@ class NewsletterDetailView(LoginRequiredMixin, View):
             logger.warning(f"Пользователь {user} не имеет прав на запуск рассылки {newsletter}")
             raise PermissionDenied
         logger.info(f"Пользователь {user} запустил рассылку {newsletter}")
-        MailService.send_email(customers, newsletter, user)
+        MailService.send_email(newsletter, user)
         context = {"newsletter": newsletter}
         return render(request, "newsletter_start.html", context=context)
 

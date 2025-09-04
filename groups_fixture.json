@@ -396,6 +396,33 @@
     }
 },
 {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can send newsletters",
+        "content_type": 9,
+        "codename": "can_send_newsletters"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can manage",
+        "content_type": 9,
+        "codename": "can_manage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can manage",
+        "content_type": 10,
+        "codename": "can_manage"
+    }
+},
+{
     "model": "auth.group",
     "pk": 1,
     "fields": {
@@ -427,6 +454,7 @@
             31,
             32,
             33,
+            45,
             34,
             35,
             36

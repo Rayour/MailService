@@ -64,7 +64,12 @@ class NewsletterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         """Метод инициализации формы. Добавление стилизации"""
 
+        user = kwargs.pop('user', None)
         super(NewsletterForm, self).__init__(*args, **kwargs)
+
+        if user:
+            self.fields['message'].queryset = Message.objects.filter(owner=user)
+            self.fields['customers'].queryset = Customer.objects.filter(owner=user)
 
         self.fields["name"].widget.attrs.update({
             "class": "form-control",

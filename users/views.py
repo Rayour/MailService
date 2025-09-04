@@ -3,23 +3,26 @@ import logging
 import os
 import random
 import string
+
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import View, ListView, DetailView
+from django.views.generic import ListView, View
 from django.views.generic.edit import CreateView, UpdateView
-from django.core.cache import cache
 
-from config.settings import DEFAULT_FROM_EMAIL, HOST_NAME, CACHE_ENABLED, CACHE_TIME, BASE_DIR
+from config.settings import (BASE_DIR, CACHE_ENABLED, CACHE_TIME,
+                             DEFAULT_FROM_EMAIL, HOST_NAME)
+from mail.models import Attempt, Customer, Newsletter
 
-from .forms import CustomUserChangeForm, CustomUserCreationForm, CustomAuthForm, CustomUserChangeManagerForm
+from .forms import (CustomAuthForm, CustomUserChangeForm,
+                    CustomUserChangeManagerForm, CustomUserCreationForm)
 from .models import CustomUser
-from mail.models import Newsletter, Customer, Attempt
 
 User = get_user_model()
 date_today = datetime.datetime.today().strftime("%d-%m-%Y")
@@ -60,7 +63,8 @@ class CustomUserCreateView(CreateView):
     def send_welcome_email(self, user_email, user_hash):
         subject = 'Подтверждение адреса электронной почты'
         message = f"""Спасибо, что проявили интерес к нашему сервису!
-        Для завершения процесса регистрации подтвердите почту, перейдя по ссылке {HOST_NAME}users/mail_confirm/?hash={user_hash}"""
+        Для завершения процесса регистрации подтвердите почту, перейдя по ссылке \
+{HOST_NAME}users/mail_confirm/?hash={user_hash}"""
         from_email = DEFAULT_FROM_EMAIL
         recipient_list = [user_email]
         send_mail(subject, message, from_email, recipient_list)
@@ -144,7 +148,6 @@ class CustomUserLoginView(LoginView):
     authentication_form = CustomAuthForm
 
     def form_valid(self, form):
-
         user = form.get_user()
         if user and not user.is_mail_confirmed:
             form.add_error("username", "Электронная почта не подтверждена")
@@ -172,10 +175,10 @@ class CustomUserListView(LoginRequiredMixin, ListView):
 
         logger.info(f"Получение списка пользователй для менеджера {user}")
         if CACHE_ENABLED:
-            users = cache.get(f"users_list")
+            users = cache.get("users_list")
             if not users:
                 users = CustomUser.objects.filter(groups__name='Base_user')
-                cache.set(f"users_list", users, CACHE_TIME)
+                cache.set("users_list", users, CACHE_TIME)
                 logger.info("Список пользователей записан в кеш")
             logger.info("Список пользователей получен из кеша")
             return users

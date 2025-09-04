@@ -1,7 +1,7 @@
-from mail.servises import MailService
-from django.core.management import call_command
 from django.core.management.base import BaseCommand
+
 from mail.models import Newsletter
+from mail.servises import MailService
 from users.models import CustomUser
 
 

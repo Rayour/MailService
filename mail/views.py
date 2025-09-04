@@ -3,16 +3,18 @@ import logging
 import os
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.core.cache import cache
 from django.views import View
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
-from config.settings import CACHE_ENABLED, CACHE_TIME, BASE_DIR
-from django.views.generic import CreateView, UpdateView, DetailView, DeleteView, ListView
-from .models import Customer, Message, Attempt, Newsletter
+from config.settings import BASE_DIR, CACHE_ENABLED, CACHE_TIME
+
 from .forms import CustomerForm, MessageForm, NewsletterForm
+from .models import Attempt, Customer, Message, Newsletter
 from .servises import MailService
 
 date_today = datetime.datetime.today().strftime("%d-%m-%Y")
@@ -165,8 +167,8 @@ class MessageListView(LoginRequiredMixin, ListView):
                 if not messages:
                     messages = super().get_queryset()
                     cache.set("messages_list_all", messages, CACHE_TIME)
-                    logger.info(f"Список всех писем записан в кеш")
-                logger.info(f"Список всех писем получен из кеша")
+                    logger.info("Список всех писем записан в кеш")
+                logger.info("Список всех писем получен из кеша")
                 return messages
             return super().get_queryset()
 
@@ -317,7 +319,6 @@ class NewsletterDetailView(LoginRequiredMixin, View):
 
     def post(self, request, pk):
         newsletter = Newsletter.objects.get(id=pk)
-        customers = newsletter.customers.all()
         user = self.request.user
         if not user.has_perm("mail.can_send_newsletters") or user.is_blocked or newsletter.status != "created":
             logger.warning(f"Пользователь {user} не имеет прав на запуск рассылки {newsletter}")

@@ -1,4 +1,5 @@
 from django.db import models
+
 from users.models import CustomUser
 
 
@@ -62,13 +63,15 @@ class Newsletter(models.Model):
         ('finished', 'Завершена')
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created')
-    name = models.CharField(max_length=100, verbose_name="Название", help_text="Укажите название рассылки", default="Рассылка")
+    name = models.CharField(max_length=100, verbose_name="Название", help_text="Укажите название рассылки",
+                            default="Рассылка")
     message = models.ForeignKey(Message, verbose_name="Письмо", help_text="Выберите письмо для рассылки",
                                 on_delete=models.CASCADE, related_name="newsletters")
     customers = models.ManyToManyField(Customer, verbose_name="Клиенты",
                                        help_text="Укажите клиентов для отправки письма")
     start_send_time = models.DateTimeField(verbose_name="Дата и время начала отправки писем", null=True, blank=True)
-    finish_send_time = models.DateTimeField(verbose_name="Дата и время окончания отправки писем", null=True, blank=True)
+    finish_send_time = models.DateTimeField(verbose_name="Дата и время окончания отправки писем",
+                                            null=True, blank=True)
     owner = models.ForeignKey(CustomUser, verbose_name="Владелец", null=True, blank=True, on_delete=models.SET_NULL,
                               related_name="newsletters")
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
@@ -101,7 +104,8 @@ class Attempt(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
     customer = models.ForeignKey(Customer, verbose_name="Клиент", on_delete=models.CASCADE,
                                  related_name="attempts")
-    newsletter = models.ForeignKey(Newsletter, verbose_name="Рассылка", on_delete=models.CASCADE, related_name="attempts", default=1)
+    newsletter = models.ForeignKey(Newsletter, verbose_name="Рассылка", on_delete=models.CASCADE,
+                                   related_name="attempts", default=1)
     server_response = models.TextField(verbose_name="Ответ сервера", null=True, blank=True)
     owner = models.ForeignKey(CustomUser, verbose_name="Владелец", null=True, blank=True, on_delete=models.SET_NULL,
                               related_name="attempts")

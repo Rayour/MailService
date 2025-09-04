@@ -1,10 +1,12 @@
 import datetime
-import os
 import logging
-from .models import Attempt
-from config.settings import DEFAULT_FROM_EMAIL
+import os
+
 from django.core.mail import send_mail
-from config.settings import BASE_DIR
+
+from config.settings import BASE_DIR, DEFAULT_FROM_EMAIL
+
+from .models import Attempt
 
 date_today = datetime.datetime.today().strftime("%d-%m-%Y")
 file_name = f"{date_today}_logs.log"

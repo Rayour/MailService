@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Клиент{% endblock %}
+
+{% block page_title %}
+Информация о клиенте
+{% endblock %}
+
+{% block content %}
+<div class="row text-start">
+    <div class="col-lg-6 col-md-8 col-s-12 mx-auto">
+        <div class="mb-4">
+            <form method="post" class="form-floating">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Сохранить</button>
+                <a href="{% url 'mail:customers_list' %}" class="btn btn-outline-secondary">Отмена</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

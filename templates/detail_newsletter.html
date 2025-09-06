@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ newsletter.name }}{% endblock %}
+
+{% block page_title %}
+{{ newsletter.name }}
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <a href="{% url 'mail:newsletters_list' %}" class="btn btn-sm btn-light ml-3">К списку</a>
+    {% if perms.mail.change_newsletter and not user.is_blocked %}
+    <a href="{% url 'mail:edit_newsletter' newsletter.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+    {% endif %}
+    {% if perms.mail.delete_newsletter and not user.is_blocked %}
+    <a href="{% url 'mail:delete_newsletter' newsletter.pk %}" class="btn btn-sm btn-outline-secondary ml-1">Удалить</a>
+    {% endif %}
+
+    <ul class="list-group mt-5 mb-5">
+        <li class="list-group-item text-start">
+            <b>Письмо</b>: {{ newsletter.message }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Клиенты</b>:<br/>
+            {% for customer in customers %}
+            {{ customer.email }}<br/>
+            {% endfor %}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Статус</b>: {% if newsletter.status == 'created' %}Создана{% elif newsletter.status == 'started' %}Запущена{% elif newsletter.status == 'finished' %}Завершена{% endif %}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Время запуска</b>: {{ newsletter.start_send_time|date:"d.m.Y H:i:s" }}
+        </li>
+        <li class="list-group-item text-start">
+            <b>Время окончания</b>: {{ newsletter.finish_send_time|date:"d.m.Y H:i:s" }}
+        </li>
+    </ul>
+
+    {% if perms.mail.can_send_newsletters and not user.is_blocked and newsletter.status == 'created' %}
+    <form method="post" class="form-floating">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-secondary">Запустить рассылку</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

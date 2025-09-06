@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block page_title %}
+Вход в аккаунт
+{% endblock %}
+
+{% block content %}
+<div class="container text-start">
+    <div class="col-lg-4 col-md-6 col-s-12 mx-auto">
+        <div class="mb-4 mt-4">
+            <p>Для входа в аккаунт, пожалуйста, заполните форму</p>
+            <form method="post" class="form-floating">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-lg btn-block btn-secondary">Войти</button>
+                <p class="pt-2"><a class="link-secondary" href="{% url 'users:password_reset' %}">Забыли пароль?</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
